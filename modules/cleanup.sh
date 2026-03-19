@@ -4,9 +4,6 @@ target="$1"
 dry_run=false
 shift
 
-# on décale pour pouvoir examiner les arguments suivants
-
-# Vérifier s'il y a une option --dry-run
 for arg in "$@"; do
 	    if [ "$arg" = "--dry-run" ]; then
 		            dry_run=true
@@ -23,7 +20,8 @@ for arg in "$@"; do
 
 				count=0
 
-# Supprimer les .tmp
+
+# .tmp
 
 for file in "$target"/*.tmp; do
 	    if [ -f "$file" ]; then
@@ -36,8 +34,7 @@ for file in "$target"/*.tmp; do
 												            fi
 													        fi
 													done
-
-# Supprimer les .log de plus de 7 jours
+# .log > 7 jours
 
 for file in "$target"/*.log; do
 	    if [ -f "$file" ]; then
@@ -60,5 +57,17 @@ for file in "$target"/*.log; do
 																							        echo "Simulation terminée. $count fichier(s) auraient été supprimés."
 																							else
 																								    echo "Nettoyage terminé. $count fichier(s) supprimé(s)."
+
+
+
+
+
+# Écriture dans le log
+
+    mkdir -p logs
+        echo "$(date): $count fichiers supprimés dans $target" >> logs/cleanup.log
 																						    fi
+
+
+
 

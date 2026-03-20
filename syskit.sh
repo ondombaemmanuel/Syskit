@@ -1,31 +1,31 @@
 #!/bin/bash
+# Script principal SysKit
+usage() {
+    echo "Utilisation : $0 {inventory|backup|cleanup|report} [options]"
+    echo "Exemples :"
+    echo "  $0 inventory"
+    echo "  $0 backup /home/user/Documents"
+    echo "  $0 cleanup /tmp"
+    echo "  $0 report"
+    exit 1
+}
 
-commande= $1
-argument= $2
+if [ $# -lt 1 ]; then usage; fi
 
-if [ "$commande" = "inventory" ]
-then 
-	bash modules/inventory.sh
+COMMAND=$1
+shift
 
-
-elif [ "$commande" = "backup" ]
-then
-	bash modules/backup.sh "$argument"
-
-elif [ "$commande" = "cleanup" ]
-then
-	bash modules/cleanup.sh "$argument"
-
- elif [ "$commande" = "report" ]
-then
-	bash modules/report.sh 
-
-else 
-	echo "commande invalide"
-	echo "ultilisation :"
-	echo " ./syskit.sh inventory"
-	echo " ./syskit.sh backup dossier"
-	echo "./syskit.sh cleanup dossier"
-	echo " ./syskit.sh report"
-fi 
+case $COMMAND in
+    inventory) ./modules/inventory.sh ;;
+    backup)
+        if [ $# -lt 1 ]; then echo "Erreur : dossier manquant"; usage; fi
+        ./modules/backup.sh "$1"
+        ;;
+    cleanup)
+        if [ $# -lt 1 ]; then echo "Erreur : dossier manquant"; usage; fi
+        ./modules/cleanup.sh "$1"
+        ;;
+    report) ./modules/report.sh ;;
+    *) echo "Commande inconnue : $COMMAND"; usage ;;
+esac 
 

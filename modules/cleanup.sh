@@ -69,5 +69,25 @@ for file in "$target"/*.log; do
 																						    fi
 
 
+TARGET=$1
+LOG_DIR="logs"
+LOG_FILE="$LOG_DIR/cleanup.log"
+
+if [ ! -d "$TARGET" ]; then
+    echo "Erreur : le dossier $TARGET n'existe pas."
+    exit 1
+fi
+
+mkdir -p "$LOG_DIR"
+
+echo "Nettoyage dans $TARGET ..." | tee -a "$LOG_FILE"
+
+# Supprimer les fichiers .tmp
+find "$TARGET" -type f -name "*.tmp" -delete -print | tee -a "$LOG_FILE"
+
+# Supprimer les fichiers .log de plus de 7 jours
+find "$TARGET" -type f -name "*.log" -mtime +7 -delete -print | tee -a "$LOG_FILE"
+
+echo "Nettoyage terminé." | tee -a "$LOG_FILE"
 
 

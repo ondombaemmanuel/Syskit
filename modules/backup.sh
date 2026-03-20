@@ -25,7 +25,13 @@ if [ $? -eq 0 ]; then
     else
 	        echo "Erreur lors de la sauvegarde."
 		fi
-
+# Aide / usage
+usage() {
+    echo "Utilisation : $0 <dossier_source> [--compress] [--exclude motif]"
+    echo "  --compress : utilise la compression gzip (.tar.gz)"
+    echo "  --exclude  : exclut les fichiers correspondant au motif (tar --exclude)"
+    exit 1
+}
 
 
 
